@@ -1,0 +1,163 @@
+mysql> CREATE TABLE Emp (
+    ->     Emp_No INT PRIMARY KEY,
+    ->     Emp_Name VARCHAR(50),
+    ->     Designation VARCHAR(50),
+    ->     Basic DECIMAL(10, 2),
+    ->     DA DECIMAL(10, 2),
+    ->     HRA DECIMAL(10, 2),
+    ->     PF DECIMAL(10, 2),
+    ->     Gross_Pay DECIMAL(10, 2),
+    ->     Net_Pay DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Emp (Emp_No, Emp_Name, Designation, Basic, DA, HRA, PF, Gross_Pay, Net_Pay)
+    -> VALUES
+    -> (1, 'Amit Sharma', 'Manager', 8000.00, 2000.00, 1500.00, 800.00, 0, 0),
+    -> (2, 'Pooja Verma', 'Assistant', 6000.00, 1500.00, 1200.00, 600.00, 0, 0),
+    -> (3, 'Ravi Kumar', 'Clerk', 4000.00, 1000.00, 800.00, 400.00, 0, 0),
+    -> (4, 'Sita Patel', 'Supervisor', 7000.00, 1800.00, 1300.00, 700.00, 0, 0),
+    -> (5, 'Rajeev Singh', 'Executive', 5000.00, 1200.00, 1000.00, 500.00, 0, 0);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Emp
+    -> SET Gross_Pay = Basic + DA + HRA,
+    ->     Net_Pay = Gross_Pay - PF;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> ALTER TABLE Emp ADD DA DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'DA'
+mysql> UPDATE Emp SET DA = 1500.00 WHERE Emp_No = 2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET DA = 2000.00 WHERE Emp_No = 1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET DA = 1000.00 WHERE Emp_No = 3;
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET DA = 1800.00 WHERE Emp_No = 4;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET DA = 1200.00 WHERE Emp_No = 5;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET HRA = 1500.00 WHERE Emp_No = 1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET HRA = 1200.00 WHERE Emp_No = 2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET HRA =800.00 WHERE Emp_No = 3;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE EMp SET HRA=1300.00 WHERE Emp_No =4;
+ERROR 1146 (42S02): Table 'EMPLOYEES.EMp' doesn't exist
+mysql> UPDATE Emp SET HRA=1300.00 WHERE Emp_No =4;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET HRA = 1000.00 WHERE Emp_No = 5;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET PF = 600.00 WHERE Emp_No = 2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET PF = 800.00 WHERE Emp_No = 1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET PF = 400.00 WHERE Emp_No = 3;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET PF = 700.00 WHERE Emp_No = 4;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp SET PF = 500.00 WHERE Emp_No = 5;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp
+    -> SET Gross_Pay = Basic + DA + HRA;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 5  Changed: 0  Warnings: 0
+
+mysql> UPDATE Emp
+    -> SET Net_Pay = Gross_Pay - PF;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 5  Changed: 0  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+| Emp_No | Emp_Name     | Designation | Basic   | DA      | HRA     | PF     | Gross_Pay | Net_Pay  |
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+|      1 | Amit Sharma  | Manager     | 8000.00 | 2000.00 | 1500.00 | 800.00 |  11500.00 | 10700.00 |
+|      2 | Pooja Verma  | Assistant   | 6000.00 | 1500.00 | 1200.00 | 600.00 |   8700.00 |  8100.00 |
+|      3 | Ravi Kumar   | Clerk       | 4000.00 | 1000.00 |  800.00 | 400.00 |   5800.00 |  5400.00 |
+|      4 | Sita Patel   | Supervisor  | 7000.00 | 1800.00 | 1300.00 | 700.00 |  10100.00 |  9400.00 |
+|      5 | Rajeev Singh | Executive   | 5000.00 | 1200.00 | 1000.00 | 500.00 |   7200.00 |  6700.00 |
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_Name, Basic
+    -> FROM Emp
+    -> WHERE Basic = (SELECT MIN(Basic) FROM Emp);
++------------+---------+
+| Emp_Name   | Basic   |
++------------+---------+
+| Ravi Kumar | 4000.00 |
++------------+---------+
+1 row in set (0.00 sec)
+
+mysql> UPDATE Emp SET Net_Pay=Net_Pay +1200 WHERE Net_Pay <10000;
+Query OK, 4 rows affected (0.00 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM Emp WHERE 10,000< Gross_Pay<20,000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',000< Gross_Pay<20,000' at line 1
+mysql> SELECT * FROM Emp WHERE 10000< Gross_Pay<20000;
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+| Emp_No | Emp_Name     | Designation | Basic   | DA      | HRA     | PF     | Gross_Pay | Net_Pay  |
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+|      1 | Amit Sharma  | Manager     | 8000.00 | 2000.00 | 1500.00 | 800.00 |  11500.00 | 10700.00 |
+|      2 | Pooja Verma  | Assistant   | 6000.00 | 1500.00 | 1200.00 | 600.00 |   8700.00 |  9300.00 |
+|      3 | Ravi Kumar   | Clerk       | 4000.00 | 1000.00 |  800.00 | 400.00 |   5800.00 |  6600.00 |
+|      4 | Sita Patel   | Supervisor  | 7000.00 | 1800.00 | 1300.00 | 700.00 |  10100.00 | 10600.00 |
+|      5 | Rajeev Singh | Executive   | 5000.00 | 1200.00 | 1000.00 | 500.00 |   7200.00 |  7900.00 |
++--------+--------------+-------------+---------+---------+---------+--------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_Name, Gross_Pay
+    -> FROM Emp
+    -> WHERE Gross_Pay BETWEEN 10000 AND 20000;
++-------------+-----------+
+| Emp_Name    | Gross_Pay |
++-------------+-----------+
+| Amit Sharma |  11500.00 |
+| Sita Patel  |  10100.00 |
++-------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Emp_Name, Net_Pay
+    -> FROM Emp
+    -> WHERE Net_Pay = (SELECT MAX(Net_Pay) FROM Emp);
++-------------+----------+
+| Emp_Name    | Net_Pay  |
++-------------+----------+
+| Amit Sharma | 10700.00 |
++-------------+----------+
+1 row in set (0.00 sec)
