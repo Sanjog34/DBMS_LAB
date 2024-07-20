@@ -1,0 +1,53 @@
+mysql> SELECT e.*, d.dname, d.loc
+    -> FROM Emp e
+    -> JOIN Dept d ON e.deptno = d.deptno;
++-------+-------------------+-----------+------+------------+----------+---------+--------+-------------------+------------+
+| empno | ename             | job       | mgr  | hiredate   | sal      | comm    | deptno | dname             | loc        |
++-------+-------------------+-----------+------+------------+----------+---------+--------+-------------------+------------+
+|     2 | Santosh Barai     | Clerk     |    1 | 2000-06-20 | 50000.00 | 2000.00 |     10 | Manav Sansadhan   | Kathmandu  |
+|     3 | Ganesh Rokaya     | Analyst   |    1 | 2010-09-10 | 60000.00 | 3000.00 |     20 | Vitt              | Pokhara    |
+|     4 | Nabin Shrestha    | Developer |    3 | 2015-02-25 | 70000.00 | 2500.00 |     30 | Suchana Pravidhik | Biratnagar |
+|     5 | Dhiraj Chaurasiya | Executive |    3 | 2000-03-18 | 90000.00 | 4000.00 |     30 | Suchana Pravidhik | Biratnagar |
++-------+-------------------+-----------+------+------------+----------+---------+--------+-------------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, d.dname
+    -> FROM Emp e
+    -> LEFT JOIN Dept d ON e.deptno = d.deptno;
++-------------------+-------------------+
+| ename             | dname             |
++-------------------+-------------------+
+| Santosh Barai     | Manav Sansadhan   |
+| Ganesh Rokaya     | Vitt              |
+| Nabin Shrestha    | Suchana Pravidhik |
+| Dhiraj Chaurasiya | Suchana Pravidhik |
++-------------------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, d.dname
+    -> FROM Emp e
+    -> RIGHT JOIN Dept d ON e.deptno = d.deptno;
++-------------------+-------------------+
+| ename             | dname             |
++-------------------+-------------------+
+| Santosh Barai     | Manav Sansadhan   |
+| Ganesh Rokaya     | Vitt              |
+| Dhiraj Chaurasiya | Suchana Pravidhik |
+| Nabin Shrestha    | Suchana Pravidhik |
+| NULL              | Vipanan           |
++-------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Emp
+    -> WHERE sal > (
+    ->     SELECT AVG(sal)
+    ->     FROM Emp
+    -> );
++-------+-------------------+-----------+------+------------+----------+---------+--------+
+| empno | ename             | job       | mgr  | hiredate   | sal      | comm    | deptno |
++-------+-------------------+-----------+------+------------+----------+---------+--------+
+|     4 | Nabin Shrestha    | Developer |    3 | 2015-02-25 | 70000.00 | 2500.00 |     30 |
+|     5 | Dhiraj Chaurasiya | Executive |    3 | 2000-03-18 | 90000.00 | 4000.00 |     30 |
++-------+-------------------+-----------+------+------------+----------+---------+--------+
+2 rows in set (0.01 sec)
