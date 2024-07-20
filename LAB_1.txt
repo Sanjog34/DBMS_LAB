@@ -1,0 +1,139 @@
+sanjog@sanjog-Aspire-A515-56G:~$ sudo mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.37-0ubuntu0.24.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| EMPLOYEES          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use EMPLOYEES;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_EMPLOYEES |
++---------------------+
+| Employees           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> desc Employees;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| Emp_id        | int           | NO   | PRI | NULL    |       |
+| First_name    | varchar(50)   | YES  |     | NULL    |       |
+| Last_name     | varchar(50)   | YES  |     | NULL    |       |
+| Phone_No      | varchar(20)   | YES  |     | NULL    |       |
+| Hire_date     | date          | YES  |     | NULL    |       |
+| Job_id        | varchar(10)   | YES  |     | NULL    |       |
+| Emp_Salary    | decimal(10,2) | YES  |     | NULL    |       |
+| Comission_Pct | decimal(4,2)  | YES  |     | NULL    |       |
+| Manager_id    | int           | YES  |     | NULL    |       |
+| Department_id | int           | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO Employees (Emp_id, First_name, Last_name, Phone_No, Hire_date, Job_id, Emp_Salary, Comission_Pct, Manager_id, Department_id)
+    -> VALUES
+    -> (1, 'sanjog', 'sapkota', '123-456-7890', '2023-01-15', 'J01', 5000.00, 0.05, 100, 60),
+    -> (2, 'santosh', 'barai', '234-567-8901', '2023-02-20', 'J02', 4800.00, 0.04, 101, 70),
+    -> (3, 'ganesh', 'rokaya', '345-678-9012', '2023-03-25', 'J03', 4700.00, 0.03, 102, 80),
+    -> (4, 'nabin', 'shrestha', '456-789-0123', '2023-04-30', 'J04', 4600.00, 0.02, 103, 90),
+    -> (5, 'dhiraj', 'chaurasiya', '567-890-1234', '2023-05-10', 'J05', 4900.00, 0.01, 104, 60);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Employees;
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+| Emp_id | First_name | Last_name  | Phone_No     | Hire_date  | Job_id | Emp_Salary | Comission_Pct | Manager_id | Department_id |
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+|      1 | sanjog     | sapkota    | 123-456-7890 | 2023-01-15 | J01    |    5000.00 |          0.05 |        100 |            60 |
+|      2 | santosh    | barai      | 234-567-8901 | 2023-02-20 | J02    |    4800.00 |          0.04 |        101 |            70 |
+|      3 | ganesh     | rokaya     | 345-678-9012 | 2023-03-25 | J03    |    4700.00 |          0.03 |        102 |            80 |
+|      4 | nabin      | shrestha   | 456-789-0123 | 2023-04-30 | J04    |    4600.00 |          0.02 |        103 |            90 |
+|      5 | dhiraj     | chaurasiya | 567-890-1234 | 2023-05-10 | J05    |    4900.00 |          0.01 |        104 |            60 |
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_id, First_name, Last_name, Emp_Salary
+    -> FROM Employees
+    -> ORDER BY Emp_Salary DESC;
++--------+------------+------------+------------+
+| Emp_id | First_name | Last_name  | Emp_Salary |
++--------+------------+------------+------------+
+|      1 | sanjog     | sapkota    |    5000.00 |
+|      5 | dhiraj     | chaurasiya |    4900.00 |
+|      2 | santosh    | barai      |    4800.00 |
+|      3 | ganesh     | rokaya     |    4700.00 |
+|      4 | nabin      | shrestha   |    4600.00 |
++--------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT First_name FROM Employees WHERE Emp_Salary >= 4800;
++------------+
+| First_name |
++------------+
+| sanjog     |
+| santosh    |
+| dhiraj     |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT First_name FROM Employees WHERE Last_name = sapkota;
+ERROR 1054 (42S22): Unknown column 'sapkota' in 'where clause'
+mysql> SELECT First_name FROM Employees WHERE Last_name sapkota;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sapkota' at line 1
+mysql> SELECT First_name FROM Employees WHERE Last_name= 'sapkota';
++------------+
+| First_name |
++------------+
+| sanjog     |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT First_name FROM Employees WHERE Department_id=60,70,80;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',70,80' at line 1
+mysql> SELECT * FROM Employees WHERE Department_id IN (60,70,80);
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+| Emp_id | First_name | Last_name  | Phone_No     | Hire_date  | Job_id | Emp_Salary | Comission_Pct | Manager_id | Department_id |
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+|      1 | sanjog     | sapkota    | 123-456-7890 | 2023-01-15 | J01    |    5000.00 |          0.05 |        100 |            60 |
+|      2 | santosh    | barai      | 234-567-8901 | 2023-02-20 | J02    |    4800.00 |          0.04 |        101 |            70 |
+|      3 | ganesh     | rokaya     | 345-678-9012 | 2023-03-25 | J03    |    4700.00 |          0.03 |        102 |            80 |
+|      5 | dhiraj     | chaurasiya | 567-890-1234 | 2023-05-10 | J05    |    4900.00 |          0.01 |        104 |            60 |
++--------+------------+------------+--------------+------------+--------+------------+---------------+------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Manager_id FROM Employees;
++------------+
+| Manager_id |
++------------+
+|        100 |
+|        101 |
+|        102 |
+|        103 |
+|        104 |
++------------+
+5 rows in set (0.00 sec)
