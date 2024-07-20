@@ -1,0 +1,142 @@
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| EMPLOYEES          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use EMPLOYEES;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_EMPLOYEES |
++---------------------+
+| Client12            |
+| Employees           |
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Teacher (
+    ->     Id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+    ->     DeptNo INT,
+    ->     Date_of_joining DATE,
+    ->     DeptName VARCHAR(100),
+    ->     Location VARCHAR(100),
+    ->     Salary DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Teacher (Name, DeptNo, Date_of_joining, DeptName, Location, Salary)
+    -> VALUES
+    -> ('Ram Kumar', 101, '2020-01-15', 'Mathematics', 'Kathmandu', 4000.00),
+    -> ('Sita Rai', 102, '2019-03-22', 'Science', 'Lalitpur', 4500.00),
+    -> ('Hari Sharma', 103, '2021-06-10', 'Mathematics', 'Bhaktapur', 4200.00),
+    -> ('Gita Joshi', 104, '2018-09-05', 'Commerce', 'Dharan', 5000.00),
+    -> ('Maya Adhikari', 105, '2022-02-28', 'Commerce', 'Pokhara', 4700.00);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELEST * FROM Teacher;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELEST * FROM Teacher' at line 1
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 4000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 4200.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5000.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 4700.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE Teacher SET Salary= Salary*1.25 WHERE DeptName ='Mathematics';
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 5000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 5250.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5000.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 4700.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 4000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 4200.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5000.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 4700.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Teacher SET Salary = Salary*1.15 WHERE DeptName = 'Commerce'
+    -> ;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 4000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 4200.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5750.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 5405.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 4000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 4200.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5750.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 5405.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM Teacher;
++----+---------------+--------+-----------------+-------------+-----------+---------+
+| Id | Name          | DeptNo | Date_of_joining | DeptName    | Location  | Salary  |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+|  1 | Ram Kumar     |    101 | 2020-01-15      | Mathematics | Kathmandu | 4000.00 |
+|  2 | Sita Rai      |    102 | 2019-03-22      | Science     | Lalitpur  | 4500.00 |
+|  3 | Hari Sharma   |    103 | 2021-06-10      | Mathematics | Bhaktapur | 4200.00 |
+|  4 | Gita Joshi    |    104 | 2018-09-05      | Commerce    | Dharan    | 5750.00 |
+|  5 | Maya Adhikari |    105 | 2022-02-28      | Commerce    | Pokhara   | 5405.00 |
++----+---------------+--------+-----------------+-------------+-----------+---------+
+5 rows in set (0.00 sec)

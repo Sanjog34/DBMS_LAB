@@ -41,7 +41,7 @@ mysql> SELECT e.ename, d.dname
 mysql> SELECT *
     -> FROM Emp
     -> WHERE sal > (
-    ->     SELECT AVG(sal)
+    ->     SELECT AVG(sal) 
     ->     FROM Emp
     -> );
 +-------+-------------------+-----------+------+------------+----------+---------+--------+

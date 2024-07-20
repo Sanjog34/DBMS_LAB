@@ -1,0 +1,89 @@
+mysql> show tables;
++---------------------+
+| Tables_in_EMPLOYEES |
++---------------------+
+| Client12            |
+| Dept                |
+| Employees           |
+| Sales               |
+| Teacher             |
++---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Dept;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE Emp (
+    ->     empno INT PRIMARY KEY,
+    ->     ename VARCHAR(50),
+    ->     job VARCHAR(50),
+    ->     mgr INT,
+    ->     hiredate DATE,
+    ->     sal DECIMAL(10, 2),
+    ->     comm DECIMAL(10, 2),
+    ->     deptno INT,
+    ->     FOREIGN KEY (deptno) REFERENCES Dept(deptno),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 11
+mysql> CREATE TABLE Emp (     empno INT PRIMARY KEY,     ename VARCHAR(50),     job VARCHAR(50),     mgr INT,
+ hiredate DATE,     sal DECIMAL(10, 2),     comm DECIMAL(10, 2),     deptno INT,     FOREIGN KEY (deptno) REFERENCES Dept(deptno) );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Dept (deptno, dname, loc)
+    -> VALUES
+    -> (10, 'Manav Sansadhan', 'Kathmandu'), 
+    -> (20, 'Vitt', 'Pokhara'),              
+    -> (30, 'Suchana Pravidhik', 'Biratnagar'), 
+    -> (40, 'Vipanan', 'Dharan');             
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+    -> VALUES
+    -> (1, 'Sanjog Sapkota', 'Manager', NULL, '1990-01-15', 80000.00, 5000.00, 10), 
+    -> (2, 'Santosh Barai', 'Clerk', 1, '2000-06-20', 50000.00, 2000.00, 10),        
+    -> (3, 'Ganesh Rokaya', 'Analyst', 1, '2010-09-10', 60000.00, 3000.00, 20),      
+    -> (4, 'Nabin Shrestha', 'Developer', 3, '2015-02-25', 70000.00, 2500.00, 30),  
+    -> (5, 'Dhiraj Chaurasiya', 'Executive', 3, '2000-03-18', 90000.00, 4000.00, 30), 
+    -> (6, 'Radha Adhikari', 'Assistant', 5, '1994-07-23', 55000.00, 2200.00, 40);   
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Emp
+    -> SET sal = sal * 1.15
+    -> WHERE YEAR(CURDATE()) - YEAR(hiredate) > 30;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> DELETE FROM Emp
+    -> WHERE YEAR(CURDATE()) - YEAR(hiredate) >= 30;
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> SELECT mgr, COUNT(*) AS num_employees
+    -> FROM Emp
+    -> GROUP BY mgr
+    -> ORDER BY num_employees DESC
+    -> LIMIT 1;
++------+---------------+
+| mgr  | num_employees |
++------+---------------+
+|    1 |             2 |
++------+---------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE VIEW Employee_Manager_View AS
+    -> SELECT e1.ename AS Employee_Name, e2.ename AS Manager_Name
+    -> FROM Emp e1
+    -> LEFT JOIN Emp e2 ON e1.mgr = e2.empno;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Employee_Manager_View;
++-------------------+---------------+
+| Employee_Name     | Manager_Name  |
++-------------------+---------------+
+| Santosh Barai     | NULL          |
+| Ganesh Rokaya     | NULL          |
+| Nabin Shrestha    | Ganesh Rokaya |
+| Dhiraj Chaurasiya | Ganesh Rokaya |
++-------------------+---------------+
+4 rows in set (0.00 sec)

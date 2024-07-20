@@ -1,0 +1,65 @@
+mysql> SELECT e1.ename AS Employee_Name, e2.ename AS Manager_Name
+    -> FROM Emp e1
+    -> JOIN Emp e2 ON e1.mgr = e2.empno
+    -> WHERE e1.sal > e2.sal;
++-------------------+---------------+
+| Employee_Name     | Manager_Name  |
++-------------------+---------------+
+| Nabin Shrestha    | Ganesh Rokaya |
+| Dhiraj Chaurasiya | Ganesh Rokaya |
++-------------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, e.deptno, e.sal
+    -> FROM Emp e
+    -> JOIN (
+    ->     SELECT deptno, MAX(sal) AS MaxSalary
+    ->     FROM Emp
+    ->     GROUP BY deptno
+    -> ) max_salaries ON e.deptno = max_salaries.deptno AND e.sal = max_salaries.MaxSalary;
++-------------------+--------+----------+
+| ename             | deptno | sal      |
++-------------------+--------+----------+
+| Santosh Barai     |     10 | 50000.00 |
+| Ganesh Rokaya     |     20 | 60000.00 |
+| Dhiraj Chaurasiya |     30 | 90000.00 |
++-------------------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT e1.ename AS Employee1, e2.ename AS Employee2, d1.loc
+    -> FROM Emp e1
+    -> JOIN Dept d1 ON e1.deptno = d1.deptno
+    -> JOIN Emp e2 ON e1.deptno = e2.deptno AND e1.empno != e2.empno
+    -> JOIN Dept d2 ON e2.deptno = d2.deptno
+    -> WHERE d1.loc = d2.loc;
++-------------------+-------------------+------------+
+| Employee1         | Employee2         | loc        |
++-------------------+-------------------+------------+
+| Nabin Shrestha    | Dhiraj Chaurasiya | Biratnagar |
+| Dhiraj Chaurasiya | Nabin Shrestha    | Biratnagar |
++-------------------+-------------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT e.ename, e.sal, e.deptno
+    -> FROM Emp e
+    -> WHERE e.sal = (
+    ->     SELECT MIN(sal)
+    ->     FROM Emp
+    -> );
++---------------+----------+--------+
+| ename         | sal      | deptno |
++---------------+----------+--------+
+| Santosh Barai | 50000.00 |     10 |
++---------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT d.deptno, d.dname, d.loc
+    -> FROM Dept d
+    -> LEFT JOIN Emp e ON d.deptno = e.deptno
+    -> WHERE e.empno IS NULL;
++--------+---------+--------+
+| deptno | dname   | loc    |
++--------+---------+--------+
+|     40 | Vipanan | Dharan |
++--------+---------+--------+
+1 row in set (0.00 sec)

@@ -1,0 +1,73 @@
+mysql> CREATE TABLE Sales (
+    ->     Sales_No INT PRIMARY KEY,
+    ->     Sales_Name VARCHAR(50),
+    ->     Branch VARCHAR(50),
+    ->     Sales_Amount DECIMAL(10, 2),
+    ->     DOB DATE
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Sales (Sales_No, Sales_Name, Branch, Sales_Amount, DOB)
+    -> VALUES
+    -> (1, 'Sanjog Sapkota', 'Kathmandu', 15000.00, '1990-12-15'),
+    -> (2, 'Santosh Barai', 'Pokhara', 12000.00, '1985-12-22'),
+    -> (3, 'Ganesh Rokaya', 'Lalitpur', 17000.00, '1992-11-10'),
+    -> (4, 'Nabin Shrestha', 'Kathmandu', 13000.00, '1987-12-05'),
+    -> (5, 'Dhiraj Chaurasiya', 'Pokhara', 11000.00, '1993-12-30');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Branch, SUM(Sales_Amount) AS Total_Sales_Amount
+    -> FROM Sales
+    -> ;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'EMPLOYEES.Sales.Branch'; this is incompatible with sql_mode=only_full_group_by
+mysql> SELECT Branch, SUM(Sales_Amount) AS Total_Sales_Amount FROM Sales GROUP BY Branch;
++-----------+--------------------+
+| Branch    | Total_Sales_Amount |
++-----------+--------------------+
+| Kathmandu |           28000.00 |
+| Pokhara   |           23000.00 |
+| Lalitpur  |           17000.00 |
++-----------+--------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT Branch, AVG(Sales_Amount) AS Average_Sales_Amount
+    -> FROM Sales
+    -> GROUP BY Branch;
++-----------+----------------------+
+| Branch    | Average_Sales_Amount |
++-----------+----------------------+
+| Kathmandu |         14000.000000 |
+| Pokhara   |         11500.000000 |
+| Lalitpur  |         17000.000000 |
++-----------+----------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name,
+    ->        DATE_FORMAT(DOB, '%d-%b-%y') AS DOB
+    -> FROM Sales
+    -> WHERE MONTH(DOB) = 12;
++-------------------+-----------+
+| Sales_Name        | DOB       |
++-------------------+-----------+
+| Sanjog Sapkota    | 15-Dec-90 |
+| Santosh Barai     | 22-Dec-85 |
+| Nabin Shrestha    | 05-Dec-87 |
+| Dhiraj Chaurasiya | 30-Dec-93 |
++-------------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name,
+    ->        DATE_FORMAT(DOB, '%d-%b-%y') AS DOB
+    -> FROM Sales
+    -> ORDER BY MONTH(DOB), DAY(DOB);
++-------------------+-----------+
+| Sales_Name        | DOB       |
++-------------------+-----------+
+| Ganesh Rokaya     | 10-Nov-92 |
+| Nabin Shrestha    | 05-Dec-87 |
+| Sanjog Sapkota    | 15-Dec-90 |
+| Santosh Barai     | 22-Dec-85 |
+| Dhiraj Chaurasiya | 30-Dec-93 |
++-------------------+-----------+
+5 rows in set (0.00 sec)
